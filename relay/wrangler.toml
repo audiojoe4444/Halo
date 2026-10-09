@@ -1,0 +1,15 @@
+# Only needed if you deploy the relay from a terminal with Wrangler.
+# If you paste the code into the Cloudflare dashboard instead (see README), ignore this file.
+name = "halo-relay"
+main = "worker.js"
+compatibility_date = "2026-10-01"
+
+[vars]
+# Your GitHub Pages address (just the site, no path), e.g. https://yourname.github.io
+ALLOWED_ORIGINS = "https://YOURNAME.github.io"
+
+[[kv_namespaces]]
+binding = "HUE_KV"
+id = "PASTE_YOUR_KV_NAMESPACE_ID"
+
+# Secrets are set with:  wrangler secret put HUE_CLIENT_ID   (and HUE_CLIENT_SECRET, APP_PIN)

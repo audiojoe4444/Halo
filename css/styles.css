@@ -1,0 +1,313 @@
+/* Halo - styles for the Meta Ray-Ban Display (600 x 600 additive display).
+ *
+ * Rules taken from Meta's web app docs:
+ *  - Black page canvas (unlit pixels are see-through). Light surfaces only where
+ *    text/controls need separation.
+ *  - Size from the viewport, never hard-code 600px.
+ *  - Controls stay inside a comfortable inset from the edges.
+ *  - One scroll owner (<main>). Visible focus that is more than just colour.
+ *  - State is shown with text/shape as well as colour.
+ */
+
+:root {
+  color-scheme: dark;
+
+  --bg: #000;
+  --surface: #1b1b21;
+  --surface-hi: #2a2a33;
+  --line: #44444f;
+  --text: #fff;
+  --text-2: #c9c9d4;
+  --accent: #ffb347;
+  --accent-ink: #1a1100;
+  --danger: #ff8a8a;
+
+  --inset: 22px;
+  --gap: 10px;
+  --radius: 22px;
+  --target: 72px;
+}
+
+* { box-sizing: border-box; }
+
+html { font-size: 20px; }
+
+html, body, #app {
+  inline-size: 100%;
+  block-size: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 400 1.2rem/1.3 "Noto Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+.app-shell {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  overflow: hidden;
+}
+
+/* ---------- header ---------- */
+.hdr {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  min-inline-size: 0;
+  padding: 18px var(--inset) 8px;
+}
+.hdr h1 {
+  margin: 0;
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-inline-size: 0;
+}
+.meta {
+  margin-inline-start: auto;
+  color: var(--text-2);
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+/* ---------- the single scroll region ---------- */
+.main {
+  min-block-size: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 6px var(--inset) 44px;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+}
+.main::-webkit-scrollbar { display: none; }
+/* Fade at the bottom edge = "there is more below". */
+.main.more-below {
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 44px), transparent);
+          mask-image: linear-gradient(to bottom, #000 calc(100% - 44px), transparent);
+}
+
+/* ---------- controls ---------- */
+.btn {
+  appearance: none;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  inline-size: 100%;
+  min-block-size: var(--target);
+  padding: 12px 20px;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  text-align: start;
+  background: var(--surface);
+  border: 2px solid transparent;
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+/* Keep a strong, thick focus ring (the glasses also draw their own selection
+   feedback; this makes it unmistakable in the simulator and on desktop). */
+.btn:focus,
+.field input:focus,
+.slider:focus {
+  outline: 4px solid var(--text);
+  outline-offset: 3px;
+  background: var(--surface-hi);
+}
+.btn:active { transform: scale(0.99); }
+
+.btn[data-on="true"] { border-color: var(--accent); }
+
+.grow { flex: 1 1 auto; min-inline-size: 0; display: block; }
+.name {
+  display: block;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.sub {
+  display: block;
+  color: var(--text-2);
+  font-size: 0.8rem;
+}
+
+/* On/off dot: filled = on, hollow ring = off (shape, not only colour). */
+.dot {
+  flex: none;
+  inline-size: 18px;
+  block-size: 18px;
+  border-radius: 50%;
+  border: 3px solid var(--text-2);
+}
+.btn[data-on="true"] > .dot {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--target);
+  gap: var(--gap);
+  margin-block-end: var(--gap);
+}
+.row.single { grid-template-columns: minmax(0, 1fr); }
+
+.btn.pwr {
+  inline-size: var(--target);
+  padding: 0;
+  justify-content: center;
+}
+.btn.pwr[data-on="true"] {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+.btn.pwr[data-on="true"]:focus { background: #ffc978; }
+
+.btn.big {
+  min-block-size: 84px;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.3rem;
+  margin-block-end: var(--gap);
+}
+.btn.big[data-on="true"] { background: var(--accent); color: var(--accent-ink); }
+.btn.big[data-on="true"]:focus { background: #ffc978; }
+
+.btn.primary {
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-weight: 700;
+  justify-content: center;
+}
+.btn.primary:focus { background: #ffc978; }
+.btn.ghost { background: transparent; border-color: var(--line); }
+.btn.ghost:focus { background: var(--surface-hi); }
+
+.eyebrow {
+  margin: 18px 6px 8px;
+  color: var(--text-2);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.note {
+  margin: 8px 6px 16px;
+  color: var(--text-2);
+  font-size: 0.95rem;
+}
+.note.err { color: var(--danger); }
+
+.ico { flex: none; inline-size: 1.4em; block-size: 1.4em; }
+
+/* ---------- brightness slider (keyboard operated, like Meta's SliderBar) ---------- */
+.slider {
+  display: block;
+  padding: 16px 20px 18px;
+  margin-block-end: var(--gap);
+  background: var(--surface);
+  border-radius: var(--radius);
+  cursor: default;
+}
+.slider .top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+.slider .val { font-weight: 700; }
+.track {
+  margin-block-start: 12px;
+  block-size: 18px;
+  border-radius: 999px;
+  background: var(--line);
+  overflow: hidden;
+}
+.slider:focus .track { block-size: 26px; }
+.fill {
+  block-size: 100%;
+  inline-size: var(--pct, 0%);
+  background: var(--accent);
+  border-radius: 999px;
+  transition: inline-size 0.12s ease-out;
+}
+.slider .hint {
+  display: block;
+  margin-block-start: 10px;
+  color: var(--text-2);
+  font-size: 0.8rem;
+}
+
+/* ---------- scenes ---------- */
+.scene .check { color: var(--accent); }
+.scene[data-on="true"] .name { color: var(--text); }
+
+/* ---------- form fields ---------- */
+.field { display: block; margin-block-end: 12px; }
+.field > span {
+  display: block;
+  margin: 0 6px 6px;
+  color: var(--text-2);
+  font-size: 0.85rem;
+}
+.field input {
+  inline-size: 100%;
+  min-block-size: var(--target);
+  padding: 16px 18px;
+  font: inherit;
+  color: inherit;
+  background: var(--surface);
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+}
+.field input::placeholder { color: #8a8a96; }
+
+/* ---------- loading / empty / error ---------- */
+.center {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 18px;
+  min-block-size: 70%;
+  text-align: center;
+}
+.center h2 { margin: 0; font-size: 1.4rem; }
+.center p { margin: 0; color: var(--text-2); font-size: 0.95rem; max-inline-size: 28ch; }
+.pulse {
+  inline-size: 22px;
+  block-size: 22px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: pulse 1.1s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { transform: scale(0.7); opacity: 0.5; }
+  50% { transform: scale(1.15); opacity: 1; }
+}
+.center .btn { max-inline-size: 360px; justify-content: center; }
+
+/* ---------- toast ---------- */
+.toast {
+  position: fixed;
+  inset-inline: var(--inset);
+  inset-block-end: 18px;
+  padding: 14px 18px;
+  background: var(--surface-hi);
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+  font-size: 0.95rem;
+  text-align: center;
+  pointer-events: none;
+}
+.toast[hidden] { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}

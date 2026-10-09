@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Control your Philips Hue lights from Meta Ray-Ban Display glasses. Unofficial.">
+  <meta name="mrbd-web-app-capable" content="yes">
+  <meta name="application-name" content="Halo">
+  <meta name="theme-color" content="#000000">
+  <title>Halo</title>
+  <!-- PNG favicon: Meta's docs list SVG favicons as unsupported on the glasses. -->
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/favicon.png">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div id="app" class="app-shell">
+    <header class="hdr">
+      <h1 id="title">Halo</h1>
+      <span id="meta" class="meta"></span>
+    </header>
+    <main id="main" class="main" aria-live="polite"></main>
+    <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  </div>
+  <noscript><p style="color:#fff;padding:24px">Halo needs JavaScript.</p></noscript>
+  <script src="config.js"></script>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
