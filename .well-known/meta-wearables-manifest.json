@@ -1,0 +1,12 @@
+{
+     "version": 1,
+     "name": "Halo",
+     "description": "Control your Philips Hue lights from your glasses. Unofficial.",
+     "appearance": {
+       "theme_color": "#F5A524",
+       "icon": {
+         "src": "../icons/icon-mask.png",
+         "type": "monochrome"
+       }
+     }
+   }
